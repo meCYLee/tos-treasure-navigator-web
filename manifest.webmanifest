@@ -1,0 +1,12 @@
+{
+  "id": "./",
+  "name": "寶藏導航｜神魔之塔挖寶輔助",
+  "short_name": "寶藏導航",
+  "description": "逐格記錄挖寶結果，估算下一個值得挖掘的位置。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#081923",
+  "theme_color": "#081923",
+  "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

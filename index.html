@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081923">
+  <meta name="description" content="神魔之塔挖寶活動的逐格紀錄與挖掘建議工具。">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <title>寶藏導航｜挖寶輔助工具</title>
+</head>
+<body>
+  <a class="skip-link" href="#board">跳到棋盤</a>
+  <div class="app-shell">
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><span class="brand-mark-core"></span></span>
+        <div>
+          <p class="brand-kicker">TOS TREASURE COMPANION</p>
+          <h1>寶藏導航</h1>
+        </div>
+      </div>
+      <button class="compact-toggle icon-text-button" id="compact-toggle" type="button" aria-pressed="false" title="切換精簡模式">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M3.5 10h17M10 10v10"/></svg>
+        <span>精簡模式</span>
+      </button>
+    </header>
+
+    <main class="workspace">
+      <section class="play-panel" aria-labelledby="board-title">
+        <div class="recommendation-card" aria-live="polite">
+          <div class="recommendation-copy">
+            <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span> 下一格建議</p>
+            <p class="recommendation-value" id="recommendation">設定寶箱數量後開始</p>
+            <p class="recommendation-caption" id="analysis-status">依目前紀錄估算；實際結果仍以遊戲為準。</p>
+          </div>
+          <div class="recommendation-emblem" aria-hidden="true">
+            <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="31" stroke="currentColor" stroke-opacity=".45"/><circle cx="40" cy="40" r="22" stroke="currentColor" stroke-opacity=".22"/><path d="M40 4v13m0 46v13M4 40h13m46 0h13" stroke="currentColor" stroke-linecap="round"/><path d="m40 21 7 19-7 19-7-19 7-19Z" fill="currentColor"/></svg>
+          </div>
+        </div>
+
+        <div class="board-card">
+          <div class="section-heading board-heading">
+            <div>
+              <p class="eyebrow">8 × 8 TREASURE MAP</p>
+              <h2 id="board-title">挖掘棋盤</h2>
+            </div>
+            <span class="board-hint" id="board-hint">先選格，再記錄結果</span>
+          </div>
+          <div class="board-frame">
+            <div class="board" id="board" role="grid" aria-label="8 乘 8 挖寶棋盤"></div>
+          </div>
+          <div class="board-legend" id="board-legend" aria-label="棋盤圖例">
+            <span><i class="legend-swatch legend-recommended" aria-hidden="true"></i>建議</span>
+            <span><i class="legend-swatch legend-hit" aria-hidden="true"></i>命中</span>
+            <span><i class="legend-swatch legend-empty" aria-hidden="true"></i>空格</span>
+            <span><i class="legend-swatch legend-known" aria-hidden="true"></i>已確認範圍</span>
+          </div>
+          <div class="board-shape-tool">
+            <button id="draw-shape-button" class="secondary-button" type="button" aria-pressed="false" disabled>框選寶箱範圍</button>
+            <p id="draw-shape-hint">命中後請框出完整寶箱範圍，再取得下一格建議。</p>
+          </div>
+        </div>
+
+        <div class="record-dock" aria-label="挖掘紀錄操作">
+          <div class="selection-line"><span>目前選取</span><strong id="selected-coordinate">尚未選取</strong></div>
+          <div class="record-actions">
+            <button class="record-button record-empty" id="record-empty" type="button" disabled><span class="button-symbol" aria-hidden="true">×</span><span>記錄空格</span></button>
+            <button class="record-button record-hit" id="record-hit" type="button" disabled><span class="button-symbol" aria-hidden="true">◆</span><span>記錄命中</span></button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-panel" aria-label="局面資訊與設定">
+        <section class="surface stats-card" aria-labelledby="stats-title">
+          <div class="section-heading"><div><p class="eyebrow">RUN PROGRESS</p><h2 id="stats-title">本局進度</h2></div></div>
+          <div class="stats-grid">
+            <div class="stat"><span>已挖</span><strong id="stats-dug">0</strong></div>
+            <div class="stat"><span>已挖寶箱格</span><strong id="stats-hit">0</strong></div>
+            <div class="stat"><span>空格</span><strong id="stats-empty">0</strong></div>
+            <div class="stat"><span>已框選寶箱格</span><strong id="stats-confirmed">0</strong></div>
+          </div>
+          <div class="history-actions">
+            <button id="undo-button" class="secondary-button" type="button" disabled><span aria-hidden="true">↶</span> 復原</button>
+            <button id="redo-button" class="secondary-button" type="button" disabled><span aria-hidden="true">↷</span> 重做</button>
+          </div>
+        </section>
+
+        <details class="surface settings-card" id="settings-panel" open>
+          <summary><span><span class="eyebrow">GAME SETUP</span><strong>寶箱設定</strong></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="details-body">
+            <p class="field-hint">輸入遊戲畫面顯示的各尺寸數量。長方形可旋轉，寶箱可相鄰。</p>
+            <div class="shape-inputs">
+              <label class="shape-input"><span class="shape-icon shape-1x2" aria-hidden="true"><i></i><i></i></span><span>1 × 2</span><input id="shape-count-1x2" name="count-1x2" type="number" min="0" max="32" step="1" inputmode="numeric" value="0"></label>
+              <label class="shape-input"><span class="shape-icon shape-1x3" aria-hidden="true"><i></i><i></i><i></i></span><span>1 × 3</span><input id="shape-count-1x3" name="count-1x3" type="number" min="0" max="21" step="1" inputmode="numeric" value="0"></label>
+              <label class="shape-input"><span class="shape-icon shape-2x2" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>2 × 2</span><input id="shape-count-2x2" name="count-2x2" type="number" min="0" max="16" step="1" inputmode="numeric" value="0"></label>
+              <label class="shape-input"><span class="shape-icon shape-3x3" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>3 × 3</span><input id="shape-count-3x3" name="count-3x3" type="number" min="0" max="4" step="1" inputmode="numeric" value="0"></label>
+            </div>
+            <button id="apply-settings" class="primary-button" type="button">套用寶箱數量</button>
+          </div>
+        </details>
+
+        <details class="surface shape-card" id="shape-panel">
+          <summary><span><span class="eyebrow">OPTIONAL CLUE</span><strong>手動輸入寶箱範圍</strong></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="details-body">
+            <p class="field-hint">若無法拖曳，也可手動輸入寶箱尺寸與左上角。確認後，範圍內所有格子都會視為已挖。</p>
+            <div class="shape-controls">
+              <label>寶箱尺寸<select id="shape-select"><option value="1x2">1 × 2</option><option value="2x1">2 × 1</option><option value="1x3">1 × 3</option><option value="3x1">3 × 1</option><option value="2x2">2 × 2</option><option value="3x3">3 × 3</option></select></label>
+              <label>左上角座標<select id="shape-anchor"><option value="">請選擇</option></select></label>
+            </div>
+            <div class="shape-actions"><button id="confirm-shape" class="secondary-button" type="button">確認範圍</button><button id="clear-shape" class="text-button" type="button">清除所有確認範圍</button></div>
+          </div>
+        </details>
+
+        <section class="surface storage-card" aria-label="遊戲操作">
+          <button id="new-game-button" class="text-button reset-button" type="button">開始新局</button>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="site-footer"><p>依已知紀錄提供估算建議。未知盤面無法保證每局用最少挖掘數完成。</p><p>非《神魔之塔》官方工具</p></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
